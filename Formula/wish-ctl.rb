@@ -1,11 +1,17 @@
 class WishCtl < Formula
   desc "Concurrent multi-cluster Kubernetes utility and management tool"
   homepage "https://github.com/wish/ctl"
-  url "https://github.com/wish/ctl/releases/download/v12.0.1-1/ctl_12.0.1-1_darwin_amd64"
-  sha256 "1f2ffe5d9b066e15e1636e990f3eb84e8da377191ac123d4840f0cc7f98adda5"
+  url "https://github.com/wish/ctl", :using => :git, :tag => "20200406"
+
+  depends_on "go" => :build
 
   def install
-    bin.install "ctl_12.0.1-1_darwin_amd64" => "ctl"
+    ENV["CGO_ENABLED"] = "0"
+    ENV["GOOS"] = "darwin"
+    system "go", "get", "-u", "github.com/gobuffalo/packr/v2/packr2"
+    system "sh", "-c", "$HOME/go/bin/packr2"
+    system "go", "build", "-o", "bin/darwin/ctl", "github.com/wish/ctl"
+    bin.install "bin/darwin/ctl" => "ctl"
   end
 
   test do
