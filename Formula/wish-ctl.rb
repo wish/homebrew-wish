@@ -4,6 +4,8 @@ class WishCtl < Formula
   url "https://github.com/wish/ctl", :using => :git, :tag => "v13.0.3"
 
   depends_on "go" => :build
+  depends_on "wget"
+  depends_on "kubectl"
 
   def install
     ENV["CGO_ENABLED"] = "0"
