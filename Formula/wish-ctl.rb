@@ -3,7 +3,7 @@ class WishCtl < Formula
   homepage "https://github.com/wish/ctl"
   url "https://github.com/wish/ctl", :using => :git, :tag => "v13.0.8"
 
-  depends_on "go" => :build
+  depends_on "go@1.15" => :build
   depends_on "wget"
   depends_on "kubectl"
 
