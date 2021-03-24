@@ -1,7 +1,7 @@
 class WishCtl < Formula
   desc "Concurrent multi-cluster Kubernetes utility and management tool"
   homepage "https://github.com/wish/ctl"
-  url "https://github.com/wish/ctl", :using => :git, :tag => "v14.0.0"
+  url "https://github.com/wish/ctl", :using => :git, :tag => "v14.1.0"
 
   depends_on "go@1.15" => :build
   depends_on "wget"
