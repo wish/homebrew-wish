@@ -11,8 +11,8 @@ class WishCtl < Formula
   def install
     ENV["CGO_ENABLED"] = "0"
     ENV["GOOS"] = "darwin"
-    system "sh", "-c", "GOCACHE= GOPATH= go get -v -u github.com/gobuffalo/packr/v2/packr2; $HOME/go/bin/packr2"
-    system "go", "build", "-o", "bin/darwin/ctl", "github.com/wish/ctl"
+    system "sh", "-c", "GOCACHE= GOPATH= go get -v github.com/gobuffalo/packr/v2/packr2; $HOME/go/bin/packr2"
+    system "go", "build", "-mod", "vendor", "-o", "bin/darwin/ctl", "github.com/wish/ctl"
     bin.install "bin/darwin/ctl" => "ctl"
   end
 
