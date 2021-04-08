@@ -4,7 +4,7 @@ class WishDev < Formula
 
   url "https://github.com/wish/dev", :using => :git, :tag => "20200721"
 
-  depends_on "go@1.13" => :build
+  depends_on "go@1.16" => :build
 
   def install
     system "make"
