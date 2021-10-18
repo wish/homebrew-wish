@@ -45,6 +45,12 @@ class PythonAT2 < Formula
     sha256 "10c9da68765315ed98850f8e048347c3eb06dd81822dc2ab1d4fde9dc9702646"
   end
 
+  # imported from https://github.com/pyenv/pyenv/pull/2061
+  patch do
+    url "https://raw.githubusercontent.com/wish/homebrew-wish/master/Patches/python-2.7.17.patch"
+    sha256 "0d36cbbda8686c45f99f18adc745071bb601eebce9fd34dc92b5487d9f1f8e6b"
+  end
+
   def lib_cellar
     prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7"
   end
@@ -100,7 +106,7 @@ class PythonAT2 < Formula
     end
 
     # Avoid linking to libgcc https://code.activestate.com/lists/python-dev/112195/
-    args << "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
+    args << "MACOSX_DEPLOYMENT_TARGET=#{MacOS.full_version}"
 
     # We want our readline and openssl! This is just to outsmart the detection code,
     # superenv handles that cc finds includes/libs!
