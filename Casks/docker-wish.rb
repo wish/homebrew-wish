@@ -1,40 +1,61 @@
 cask "docker-wish" do
-  if MacOS.version <= :el_capitan
-    version "18.06.1-ce-mac73,26764"
-    sha256 "3429eac38cf0d198039ad6e1adce0016f642cdb914a34c67ce40f069cdb047a5"
+  arch = Hardware::CPU.intel? ? "amd64" : "arm64"
+
+  version "4.4.2,73305"
+
+  if Hardware::CPU.intel?
+    sha256 "101c573dea42dd8eb07c8af6a6c01fa5508fce8371fa1279ab8d1a71eb6305d7"
   else
-    version "2.5.0.1,49550"
-    sha256 "144eebacfb6815aa2a39987f778bdac31096008dbc034deee5f0903cbb62e266"
+    sha256 "815bb1965e94f6d7f312cd20046a4dbd07f3db19631557de1d495702ddc298cd"
   end
 
-  # This file docker-wish.rb was created from
-  # https://github.com/Homebrew/homebrew-cask/blob/5d7fa616eebff89351b1762e4b9d666e4f972d5c/Casks/docker.rb
-  # because the folks at Docker actually replaced the original dmg with
-  # something else on Sep 1st 2021, so the homebrew sha256 check fails.
-  # This downloads the original content from s3 so the homebrew sha check passes.
-  url "https://s3-us-west-1.amazonaws.com/wish-tools/Docker-2.5.0.1,49550.dmg"
-  appcast "https://desktop.docker.com/mac/stable/appcast.xml"
+  url "https://desktop.docker.com/mac/main/#{arch}/#{version.csv.second}/Docker.dmg"
   name "Docker Desktop"
   name "Docker Community Edition"
   name "Docker CE"
   desc "App to build and share containerized applications and microservices"
   homepage "https://www.docker.com/products/docker-desktop"
 
+  livecheck do
+    url "https://desktop.docker.com/mac/main/#{arch}/appcast.xml"
+    strategy :sparkle
+  end
+
   auto_updates true
+  conflicts_with formula: %w[
+    docker
+    docker-completion
+    docker-compose
+    docker-compose-completion
+    docker-credential-helper-ecr
+    hyperkit
+    kubernetes-cli
+  ]
 
   app "Docker.app"
+  binary "#{appdir}/Docker.app/Contents/Resources/etc/docker.bash-completion",
+         target: "#{HOMEBREW_PREFIX}/etc/bash_completion.d/docker"
+  binary "#{appdir}/Docker.app/Contents/Resources/etc/docker-compose.bash-completion",
+         target: "#{HOMEBREW_PREFIX}/etc/bash_completion.d/docker-compose"
+  binary "#{appdir}/Docker.app/Contents/Resources/etc/docker.zsh-completion",
+         target: "#{HOMEBREW_PREFIX}/share/zsh/site-functions/_docker"
+  binary "#{appdir}/Docker.app/Contents/Resources/etc/docker-compose.zsh-completion",
+         target: "#{HOMEBREW_PREFIX}/share/zsh/site-functions/_docker_compose"
+  binary "#{appdir}/Docker.app/Contents/Resources/etc/docker.fish-completion",
+         target: "#{HOMEBREW_PREFIX}/share/fish/vendor_completions.d/docker.fish"
+  binary "#{appdir}/Docker.app/Contents/Resources/etc/docker-compose.fish-completion",
+         target: "#{HOMEBREW_PREFIX}/share/fish/vendor_completions.d/docker-compose.fish"
 
   uninstall delete:    [
     "/Library/PrivilegedHelperTools/com.docker.vmnetd",
-    "/private/var/tmp/com.docker.vmnetd.socket",
-    "/usr/local/bin/docker",
     "/usr/local/bin/docker-compose",
     "/usr/local/bin/docker-credential-desktop",
     "/usr/local/bin/docker-credential-ecr-login",
     "/usr/local/bin/docker-credential-osxkeychain",
+    "/usr/local/bin/docker",
     "/usr/local/bin/hyperkit",
-    "/usr/local/bin/kubectl",
     "/usr/local/bin/kubectl.docker",
+    "/usr/local/bin/kubectl",
     "/usr/local/bin/notary",
     "/usr/local/bin/vpnkit",
   ],
@@ -47,21 +68,26 @@ cask "docker-wish" do
   zap trash: [
     "/usr/local/bin/docker-compose.backup",
     "/usr/local/bin/docker.backup",
-    "~/Library/Application Support/Docker Desktop",
+    "~/.docker",
     "~/Library/Application Scripts/com.docker.helper",
-    "~/Library/Caches/KSCrashReports/Docker",
+    "~/Library/Application Support/com.bugsnag.Bugsnag/com.docker.docker",
+    "~/Library/Application Support/Docker Desktop",
     "~/Library/Caches/com.docker.docker",
     "~/Library/Caches/com.plausiblelabs.crashreporter.data/com.docker.docker",
+    "~/Library/Caches/KSCrashReports/Docker",
     "~/Library/Containers/com.docker.docker",
     "~/Library/Containers/com.docker.helper",
     "~/Library/Group Containers/group.com.docker",
+    "~/Library/HTTPStorages/com.docker.docker.binarycookies",
+    "~/Library/Logs/Docker Desktop",
     "~/Library/Preferences/com.docker.docker.plist",
     "~/Library/Preferences/com.electron.docker-frontend.plist",
+    "~/Library/Preferences/com.electron.dockerdesktop.plist",
     "~/Library/Saved Application State/com.electron.docker-frontend.savedState",
-    "~/Library/Logs/Docker Desktop",
+    "~/Library/Saved Application State/com.electron.dockerdesktop.savedState",
   ],
       rmdir: [
-        "~/Library/Caches/KSCrashReports",
         "~/Library/Caches/com.plausiblelabs.crashreporter.data",
+        "~/Library/Caches/KSCrashReports",
       ]
 end
