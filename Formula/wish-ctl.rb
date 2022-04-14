@@ -10,7 +10,6 @@ class WishCtl < Formula
 
   def install
     ENV["CGO_ENABLED"] = "0"
-    ENV["GOOS"] = "darwin"
     system "go", "build", "-o", "bin/darwin/ctl", "github.com/wish/ctl"
     bin.install "bin/darwin/ctl" => "ctl"
   end
