@@ -5,7 +5,6 @@ class Dobi < Formula
   sha256 "15d31d8a93fcfd7b5b1b27559a562a3503a9a60ce673e9093e06b70ae41e2963"
 
   depends_on "go@1.16" => :build
-  depends_on "linux-headers@5.15" => :build
   depends_on "git"
 
   def install
