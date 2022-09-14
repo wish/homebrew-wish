@@ -3,7 +3,7 @@ class WishDevPrerelease < Formula
   homepage "https://github.com/wish/dev"
   version "master"
 
-  url "https://github.com/wish/dev", using: :git, branch: "master"
+  url "https://github.com/wish/dev", using: :git, tag: "prerelease"
 
   conflicts_with "wish-dev", because: "Can only install one dev binary"
 
